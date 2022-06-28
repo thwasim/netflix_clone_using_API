@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:netfix_ui/widgets/coming.dart';
 import 'package:netfix_ui/widgets/toprated.dart';
 import 'package:netfix_ui/widgets/trending.dart';
 import 'package:netfix_ui/widgets/tv.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -16,6 +19,7 @@ class _HomeState extends State<Home> {
   List trendingmovies = [];
   List topratedmovies = [];
   List tv = [];
+  List coming = [];
 
   @override
   void initState() {
@@ -36,12 +40,14 @@ class _HomeState extends State<Home> {
     Map trendingresult = await tmdbWithCustomLogs.v3.trending.getTrending();
     Map topratedresult = await tmdbWithCustomLogs.v3.movies.getTopRated();
     Map tvresult = await tmdbWithCustomLogs.v3.tv.getPopular();
+    Map comingresult = await tmdbWithCustomLogs.v3.movies.getPopular();
 
     print('..............................${trendingresult}');
     setState(() {
       trendingmovies = trendingresult['results'];
       topratedmovies = topratedresult['results'];
       tv = tvresult['results'];
+      coming = comingresult['results'];
     });
   }
 
@@ -248,6 +254,7 @@ class _HomeState extends State<Home> {
           TrendingMovies(trending: trendingmovies),
           TopRatedMovies(toprated: topratedmovies),
           TV(tv: tv),
+          ComingMovies(coming: coming),
         ],
       ),
     );
