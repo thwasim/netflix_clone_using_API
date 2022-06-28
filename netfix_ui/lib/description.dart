@@ -19,11 +19,11 @@ class Description extends StatelessWidget {
       body: SizedBox(
         child: ListView(children: [
           SizedBox(
-              height: 250,
+              height: 500,
               child: Stack(children: [
                 Positioned(
                   child: SizedBox(
-                    height: 250,
+                    height: 500,
                     width: MediaQuery.of(context).size.width,
                     child: Image.network(
                       bannerurl,
@@ -32,12 +32,12 @@ class Description extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                    bottom: 10, child: Text('⭐ Average Rating - ' + vote)),
+                    bottom: 10, child: Text('⭐ Average Rating - ' + vote,style: const TextStyle(color: Color.fromARGB(255, 255, 0, 0)),)),
               ])),
           Container(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Releasing On - ' + Launch_on,
+                'Releasing On - ' + Launch_on,style: const TextStyle(color: Colors.white),
               )),
           Row(
             children: [
@@ -50,7 +50,7 @@ class Description extends StatelessWidget {
                 child: Container(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      description,
+                      description,style: const TextStyle(color: Colors.white),
                     )),
               ),
             ],

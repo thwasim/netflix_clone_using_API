@@ -19,8 +19,9 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+     loadmovies();
     super.initState();
-    loadmovies();
+   
   }
 
   loadmovies() async {
@@ -36,7 +37,7 @@ class _HomeState extends State<Home> {
     Map topratedresult = await tmdbWithCustomLogs.v3.movies.getTopRated();
     Map tvresult = await tmdbWithCustomLogs.v3.tv.getPopular();
 
-    print((trendingresult));
+    print('..............................${trendingresult}');
     setState(() {
       trendingmovies = trendingresult['results'];
       topratedmovies = topratedresult['results'];
@@ -50,6 +51,7 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       body: CustomScrollView(
+        
         slivers: <Widget>[
           SliverAppBar(
             collapsedHeight: 90,
@@ -243,19 +245,9 @@ class _HomeState extends State<Home> {
               ),
             )),
           ),
-          SliverToBoxAdapter(
-            child: ListView(
-              children: [
-                TV(tv: tv),
-                TrendingMovies(
-                  trending: trendingmovies,
-                ),
-                TopRatedMovies(
-                  toprated: topratedmovies,
-                ),
-              ],
-            ),
-          ),
+          TrendingMovies(trending: trendingmovies),
+          TopRatedMovies(toprated: topratedmovies),
+          TV(tv: tv),
         ],
       ),
     );
