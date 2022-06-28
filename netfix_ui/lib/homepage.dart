@@ -1,25 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:netfix_ui/widgets/toprated.dart';
+import 'package:netfix_ui/widgets/trending.dart';
+import 'package:netfix_ui/widgets/tv.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
-class Myhome extends StatefulWidget {
-  const Myhome({Key? key}) : super(key: key);
-
+class Home extends StatefulWidget {
   @override
-  State<Myhome> createState() => _MyhomeState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyhomeState extends State<Myhome> {
+class _HomeState extends State<Home> {
+  final String apikey = '2edf5b471896083b2faa298313858789';
+  final String readaccesstoken =
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZWRmNWI0NzE4OTYwODNiMmZhYTI5ODMxMzg1ODc4OSIsInN1YiI6IjYyYmE3NjU0MmUyYjJjMDMxZWI2MmEzYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.PtXZ0YXOZuD-ajnQFYNTGEdW87Vmvxz5i_SPFzO8Ino';
   List trendingmovies = [];
-
-  final String apikey = 'd9479731a4afed0c0780f951d8dbd5e5 ';
-
-  final readaccesstoken =
-      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkOTQ3OTczMWE0YWZlZDBjMDc4MGY5NTFkOGRiZDVlNSIsInN1YiI6IjYyYWQ2M2U0ZWI2NGYxMDA2NDMxMTk2NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KG-LrxvlkbDho30U4XNm9QWnSA0dv4IuJlvA9H4qPxg';
+  List topratedmovies = [];
+  List tv = [];
 
   @override
   void initState() {
-    loadmovies();
     super.initState();
+    loadmovies();
+  }
+
+  loadmovies() async {
+    TMDB tmdbWithCustomLogs = TMDB(
+      ApiKeys(apikey, readaccesstoken),
+      logConfig: const ConfigLogger(
+        showLogs: true,
+        showErrorLogs: true,
+      ),
+    );
+
+    Map trendingresult = await tmdbWithCustomLogs.v3.trending.getTrending();
+    Map topratedresult = await tmdbWithCustomLogs.v3.movies.getTopRated();
+    Map tvresult = await tmdbWithCustomLogs.v3.tv.getPopular();
+
+    print((trendingresult));
+    setState(() {
+      trendingmovies = trendingresult['results'];
+      topratedmovies = topratedresult['results'];
+      tv = tvresult['results'];
+    });
   }
 
   @override
@@ -132,9 +154,7 @@ class _MyhomeState extends State<Myhome> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     TextButton(
-                                        onPressed: () {
-                                          loadmovies();
-                                        },
+                                        onPressed: () {},
                                         child: const Text(
                                           'offbeat -',
                                           style: TextStyle(color: Colors.white),
@@ -223,145 +243,21 @@ class _MyhomeState extends State<Myhome> {
               ),
             )),
           ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Popular On Netflix',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
           SliverToBoxAdapter(
-            child: SizedBox(
-              width: 170,
-              height: 170,
-              child: ListView.builder(
-                  primary: false,
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemBuilder: ((context, index) {
-                    return Container(
-                      width: 170,
-                      height: 170,
-                      child: Image.network(
-                          'https://m.media-amazon.com/images/M/MV5BMGRmMzMyOTEtMzZlMy00MTRmLTg2ZDMtYTdmNWM2YzIyNGEyXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg'),
-                    );
-                  })),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Text(
-                'Now On Treding',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: 170,
-              height: 170,
-              child: ListView.builder(
-                  primary: false,
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemBuilder: ((context, index) {
-                    return Container(
-                      width: 170,
-                      height: 170,
-                      child: Image.network(
-                          'https://m.media-amazon.com/images/M/MV5BMGRmMzMyOTEtMzZlMy00MTRmLTg2ZDMtYTdmNWM2YzIyNGEyXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg'),
-                    );
-                  })),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Text(
-                'Top Rated',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: 170,
-              height: 170,
-              child: ListView.builder(
-                  primary: false,
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemBuilder: ((context, index) {
-                    return Container(
-                      width: 170,
-                      height: 170,
-                      child: Image.network(
-                          'https://m.media-amazon.com/images/M/MV5BMGRmMzMyOTEtMzZlMy00MTRmLTg2ZDMtYTdmNWM2YzIyNGEyXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg'),
-                    );
-                  })),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Text(
-                'Coming',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: 300,
-              height: 300,
-              child: ListView.builder(
-                  primary: false,
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemBuilder: ((context, index) {
-                    return Container(
-                      width: 300,
-                      height: 300,
-                      child: Image.network(
-                          'https://m.media-amazon.com/images/M/MV5BMGRmMzMyOTEtMzZlMy00MTRmLTg2ZDMtYTdmNWM2YzIyNGEyXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg'),
-                    );
-                  })),
+            child: ListView(
+              children: [
+                TV(tv: tv),
+                TrendingMovies(
+                  trending: trendingmovies,
+                ),
+                TopRatedMovies(
+                  toprated: topratedmovies,
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  loadmovies() async {
-    TMDB tmdbwithcustomlogs = TMDB(ApiKeys(apikey, readaccesstoken),
-        logConfig: const ConfigLogger(
-          showLogs: true,
-          showErrorLogs: true,
-        ));
-    Map trendingresult = await tmdbwithcustomlogs.v3.trending.getTrending();
-
-    setState(() {
-      trendingmovies = trendingresult['results'];
-    });
   }
 }

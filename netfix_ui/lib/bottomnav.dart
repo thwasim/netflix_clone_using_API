@@ -72,11 +72,11 @@ class _MainHomeState extends State<MainHome> {
         label: 'Downloads'),
   ];
 
-  final List pages = const [
-    Myhome(),
-    ComingSoon(),
-    Fastlaughs(),
-    Screendownload(),
+  final List pages =  [
+    Home(),
+  const  ComingSoon(),
+  const  Fastlaughs(),
+  const  Screendownload(),
   ];
 
   @override

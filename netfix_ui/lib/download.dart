@@ -6,7 +6,7 @@ class Screendownload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-     backgroundColor: Colors.blueGrey,
+     backgroundColor: Color.fromARGB(255, 56, 116, 146),
     );
   }
 }
